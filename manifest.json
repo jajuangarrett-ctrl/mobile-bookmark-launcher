@@ -1,0 +1,10 @@
+{
+  "id": "mobile-bookmark-launcher",
+  "name": "Mobile Bookmark Launcher",
+  "version": "0.1.0",
+  "minAppVersion": "1.4.0",
+  "description": "Touch-first launcher for bookmarks, recent notes, and folder-scoped file search.",
+  "author": "Franklin Garrett",
+  "authorUrl": "",
+  "isDesktopOnly": false
+}

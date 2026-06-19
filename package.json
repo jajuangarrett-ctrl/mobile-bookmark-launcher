@@ -1,0 +1,23 @@
+{
+  "name": "mobile-bookmark-launcher",
+  "version": "0.1.0",
+  "description": "Touch-first Obsidian launcher for bookmarks, recent notes, and folder-scoped file search.",
+  "main": "main.js",
+  "scripts": {
+    "dev": "node esbuild.config.mjs",
+    "build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production",
+    "test": "vitest run"
+  },
+  "keywords": ["obsidian-plugin", "obsidian", "bookmarks", "mobile"],
+  "author": "Franklin Garrett",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.12.7",
+    "builtin-modules": "3.3.0",
+    "esbuild": "0.20.2",
+    "obsidian": "latest",
+    "tslib": "2.6.2",
+    "typescript": "5.4.5",
+    "vitest": "^1.6.0"
+  }
+}
