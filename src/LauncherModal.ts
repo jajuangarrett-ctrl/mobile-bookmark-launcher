@@ -4,17 +4,11 @@ import {
   filterExistingRecentFiles,
   filterRecentFiles
 } from "./recent";
-import {
-  filterFilesInFolder,
-  filterFoldersByQuery
-} from "./folderSearch";
 import type {
   BookmarkItem,
   BookmarksPluginInstance,
   CustomApp,
   FileExplorerPluginInstance,
-  FileListItem,
-  FolderListItem,
   GlobalSearchPluginInstance,
   LauncherTab,
   WebViewerPluginInstance
@@ -26,9 +20,8 @@ type BookmarkLevel = {
 };
 
 const TAB_LABELS: Record<LauncherTab, string> = {
-  bookmarks: "Bookmarks",
   recent: "Recent Notes",
-  folders: "Folder Search"
+  bookmarks: "Bookmarks"
 };
 
 export class LauncherModal extends Modal {
@@ -37,7 +30,6 @@ export class LauncherModal extends Modal {
   private query = "";
   private bodyEl: HTMLElement | null = null;
   private bookmarkStack: BookmarkLevel[] = [];
-  private selectedFolder: FolderListItem | null = null;
 
   constructor(app: App, plugin: MobileBookmarkLauncherPlugin) {
     super(app);
@@ -111,7 +103,7 @@ export class LauncherModal extends Modal {
       return;
     }
 
-    this.renderFolderSearch(this.bodyEl);
+    this.renderBookmarks(this.bodyEl);
   }
 
   private renderBookmarks(container: HTMLElement) {
@@ -199,60 +191,6 @@ export class LauncherModal extends Modal {
     });
   }
 
-  private renderFolderSearch(container: HTMLElement) {
-    if (!this.selectedFolder) {
-      const folders = filterFoldersByQuery(this.getVaultFolders(), this.query);
-      if (folders.length === 0) {
-        this.renderEmpty(container, "No folders found", "Try a different folder name.");
-        return;
-      }
-
-      folders.forEach((folder) => {
-        this.renderActionRow(container, {
-          icon: "folder-search",
-          title: folder.name,
-          subtitle: this.plugin.settings.showPaths ? folder.path : "",
-          onClick: () => {
-            this.selectedFolder = folder;
-            this.query = "";
-            this.renderShell();
-          }
-        });
-      });
-      return;
-    }
-
-    this.renderBackRow(container, this.selectedFolder.path, () => {
-      this.selectedFolder = null;
-      this.query = "";
-      this.renderShell();
-    });
-
-    const files = filterFilesInFolder(
-      this.getVaultFiles(),
-      this.selectedFolder.path,
-      this.query
-    );
-
-    if (files.length === 0) {
-      this.renderEmpty(
-        container,
-        "No files found",
-        "This folder has no matching files."
-      );
-      return;
-    }
-
-    files.forEach((file) => {
-      this.renderActionRow(container, {
-        icon: this.getFileIcon(file.extension),
-        title: file.basename || file.name,
-        subtitle: this.plugin.settings.showPaths ? file.path : "",
-        onClick: () => void this.openFilePath(file.path)
-      });
-    });
-  }
-
   private renderActionRow(
     container: HTMLElement,
     config: {
@@ -294,29 +232,7 @@ export class LauncherModal extends Modal {
 
   private getSearchPlaceholder(): string {
     if (this.activeTab === "bookmarks") return "Search bookmarks";
-    if (this.activeTab === "recent") return "Search recent notes";
-    if (this.selectedFolder) return "Search files in folder";
-    return "Search folders";
-  }
-
-  private getVaultFolders(): FolderListItem[] {
-    return this.app.vault
-      .getAllLoadedFiles()
-      .filter((item): item is TFolder => item instanceof TFolder)
-      .filter((folder) => folder.path !== "/" && folder.path.length > 0)
-      .map((folder) => ({
-        path: folder.path,
-        name: folder.name || folder.path
-      }));
-  }
-
-  private getVaultFiles(): FileListItem[] {
-    return this.app.vault.getFiles().map((file) => ({
-      path: file.path,
-      name: file.name,
-      basename: file.basename,
-      extension: file.extension.toLowerCase()
-    }));
+    return "Search recent notes";
   }
 
   private bookmarkMatchesQuery(item: BookmarkItem, query: string): boolean {
@@ -360,16 +276,6 @@ export class LauncherModal extends Modal {
     if (item.type === "graph") return "git-fork";
     if (item.type === "url") return "globe-2";
     if (item.subpath) return item.subpath.startsWith("#^") ? "toy-brick" : "heading";
-    return "file";
-  }
-
-  private getFileIcon(extension: string): string {
-    if (extension === "md") return "file-text";
-    if (extension === "canvas") return "layout-dashboard";
-    if (extension === "pdf") return "file";
-    if (["png", "jpg", "jpeg", "gif", "webp", "svg"].includes(extension)) {
-      return "image";
-    }
     return "file";
   }
 

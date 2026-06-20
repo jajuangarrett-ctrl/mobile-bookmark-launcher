@@ -10,7 +10,7 @@ export interface MobileBookmarkLauncherSettings {
 }
 
 export const DEFAULT_SETTINGS: MobileBookmarkLauncherSettings = {
-  defaultTab: "bookmarks",
+  defaultTab: "recent",
   maxRecentFiles: 30,
   showPaths: true,
   openInNewTab: true
@@ -35,9 +35,8 @@ export class MobileBookmarkLauncherSettingTab extends PluginSettingTab {
       .setDesc("Tab shown first when the launcher opens.")
       .addDropdown((dropdown) =>
         dropdown
-          .addOption("bookmarks", "Bookmarks")
           .addOption("recent", "Recent Notes")
-          .addOption("folders", "Folder Search")
+          .addOption("bookmarks", "Bookmarks")
           .setValue(this.plugin.settings.defaultTab)
           .onChange(async (value) => {
             this.plugin.settings.defaultTab = value as LauncherTab;
@@ -68,7 +67,7 @@ export class MobileBookmarkLauncherSettingTab extends PluginSettingTab {
 
     new Setting(containerEl)
       .setName("Show paths")
-      .setDesc("Show folder paths under launcher item names.")
+      .setDesc("Show file paths under launcher item names.")
       .addToggle((toggle) =>
         toggle.setValue(this.plugin.settings.showPaths).onChange(async (value) => {
           this.plugin.settings.showPaths = value;

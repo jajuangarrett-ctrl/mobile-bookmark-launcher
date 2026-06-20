@@ -1,7 +1,7 @@
 {
   "name": "mobile-bookmark-launcher",
-  "version": "0.1.0",
-  "description": "Touch-first Obsidian launcher for bookmarks, recent notes, and folder-scoped file search.",
+  "version": "0.1.1",
+  "description": "Touch-first Obsidian launcher for recent notes and bookmarks.",
   "main": "main.js",
   "scripts": {
     "dev": "node esbuild.config.mjs",

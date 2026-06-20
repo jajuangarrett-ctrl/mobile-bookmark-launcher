@@ -44,6 +44,9 @@ export default class MobileBookmarkLauncherPlugin extends Plugin {
   async loadPluginData() {
     const data = (await this.loadData()) as PluginData | null;
     this.settings = Object.assign({}, DEFAULT_SETTINGS, data?.settings ?? {});
+    if (!["recent", "bookmarks"].includes(this.settings.defaultTab)) {
+      this.settings.defaultTab = DEFAULT_SETTINGS.defaultTab;
+    }
     this.recentFiles = Array.isArray(data?.recentFiles) ? data.recentFiles : [];
   }
 

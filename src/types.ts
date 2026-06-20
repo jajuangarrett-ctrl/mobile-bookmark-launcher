@@ -1,6 +1,6 @@
 import { App, PaneType, Plugin, TAbstractFile } from "obsidian";
 
-export type LauncherTab = "bookmarks" | "recent" | "folders";
+export type LauncherTab = "recent" | "bookmarks";
 
 export type BookmarkType = "group" | "folder" | "file" | "graph" | "search" | "url";
 
@@ -65,16 +65,4 @@ export interface RecentFileEntry {
   basename: string;
   extension: string;
   timestamp: number;
-}
-
-export interface FileListItem {
-  path: string;
-  name: string;
-  basename: string;
-  extension: string;
-}
-
-export interface FolderListItem {
-  path: string;
-  name: string;
 }

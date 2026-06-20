@@ -4,9 +4,8 @@ Touch-first Obsidian launcher for Franklin's mobile vault workflow.
 
 ## Features
 
-- Bookmarks tab for Obsidian core bookmarks, including bookmark groups.
 - Recent Notes tab tracked independently by this plugin.
-- Folder Search tab that first finds a folder, then shows only files inside that folder tree.
+- Bookmarks tab for Obsidian core bookmarks, including bookmark groups.
 - Mobile-sized tap targets and no keyboard shortcut dependency.
 
 ## Development
